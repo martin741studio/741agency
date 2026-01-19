@@ -1,0 +1,40 @@
+{
+  "meta": {
+    "brand_name": "741.Studio",
+    "description": "Core design tokens for UI implementation."
+  },
+  "colors": {
+    "primary": {
+      "DEFAULT": "#F9C117",
+      "hover": "#FCB141",
+      "foreground": "#000000"
+    },
+    "secondary": {
+      "DEFAULT": "#FCB141",
+      "foreground": "#000000"
+    },
+    "background": "#FFFFFF",
+    "foreground": "#000000",
+    "muted": "#F4F4F5",
+    "accent": "#FCB141",
+    "destructive": "#EF4444",
+    "success": "#10B981"
+  },
+  "typography": {
+    "font_family_headings": [
+      "Jost",
+      "sans-serif"
+    ],
+    "font_family_body": [
+      "Montserrat",
+      "sans-serif"
+    ],
+    "font_weight_bold": "700",
+    "font_weight_normal": "400"
+  },
+  "ui": {
+    "border_radius_default": "6px",
+    "border_radius_small": "3px",
+    "spacing_base_unit": "4px"
+  }
+}
