@@ -1,0 +1,6 @@
+instaloader
+playwright
+typer
+beautifulsoup4
+pandas
+python-dotenv
