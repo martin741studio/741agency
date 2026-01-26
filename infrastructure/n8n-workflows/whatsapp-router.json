@@ -1,0 +1,56 @@
+{
+    "nodes": [
+        {
+            "parameters": {
+                "httpMethod": "POST",
+                "path": "whatsapp",
+                "options": {}
+            },
+            "id": "webhook-whatsapp",
+            "name": "WhatsApp Webhook",
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 1,
+            "position": [
+                460,
+                460
+            ],
+            "webhookId": "whatsapp-incoming"
+        },
+        {
+            "parameters": {
+                "operation": "send",
+                "phoneNumberId": "YOUR_PHONE_NUMBER_ID",
+                "recipientPhoneNumber": "YOUR_PERSONAL_NUMBER",
+                "text": "Hello from n8n!",
+                "options": {}
+            },
+            "id": "whatsapp-send",
+            "name": "WhatsApp",
+            "type": "n8n-nodes-base.whatsapp",
+            "typeVersion": 1,
+            "position": [
+                780,
+                460
+            ],
+            "credentials": {
+                "whatsappApi": {
+                    "id": "YOUR_WHATSAPP_CREDENTIAL_ID",
+                    "name": "WhatsApp Cloud API"
+                }
+            }
+        }
+    ],
+    "connections": {
+        "WhatsApp Webhook": {
+            "main": [
+                [
+                    {
+                        "node": "WhatsApp",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    }
+}

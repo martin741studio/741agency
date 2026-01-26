@@ -1,0 +1,84 @@
+{
+    "nodes": [
+        {
+            "parameters": {
+                "options": {}
+            },
+            "id": "e98e4f50-689e-4c28-9844-313620305845",
+            "name": "When clicking \"Execute Workflow\"",
+            "type": "n8n-nodes-base.manualTrigger",
+            "typeVersion": 1,
+            "position": [
+                460,
+                460
+            ]
+        },
+        {
+            "parameters": {
+                "postProcessAction": "nothing",
+                "options": {}
+            },
+            "id": "0d277d32-6151-40c2-901c-66858223611d",
+            "name": "IMAP Email Trigger",
+            "type": "n8n-nodes-base.emailReadImap",
+            "typeVersion": 2,
+            "position": [
+                460,
+                240
+            ],
+            "credentials": {
+                "imap": {
+                    "id": "YOUR_IMAP_CREDENTIAL_ID",
+                    "name": "IMAP Account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "fromEmail": "your-email@741.studio",
+                "toEmail": "recipient@example.com",
+                "subject": "Test from n8n",
+                "text": "This is a test email sent from your new n8n instance.",
+                "options": {}
+            },
+            "id": "f51663b7-7892-4299-813c-352219717651",
+            "name": "Send Email",
+            "type": "n8n-nodes-base.emailSend",
+            "typeVersion": 2,
+            "position": [
+                780,
+                360
+            ],
+            "credentials": {
+                "smtp": {
+                    "id": "YOUR_SMTP_CREDENTIAL_ID",
+                    "name": "SMTP Account"
+                }
+            }
+        }
+    ],
+    "connections": {
+        "When clicking \"Execute Workflow\"": {
+            "main": [
+                [
+                    {
+                        "node": "Send Email",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "IMAP Email Trigger": {
+            "main": [
+                [
+                    {
+                        "node": "Send Email",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    }
+}

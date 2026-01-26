@@ -1,0 +1,82 @@
+{
+    "nodes": [
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "=https://graph.facebook.com/v20.0/{{$json.phone_id}}/messages",
+                "authentication": "predefinedCredentialType",
+                "nodeCredentialType": "whatsappApi",
+                "sendBody": true,
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "messaging_product",
+                            "value": "whatsapp"
+                        },
+                        {
+                            "name": "to",
+                            "value": "YOUR_RECIPIENT_NUMBER"
+                        },
+                        {
+                            "name": "type",
+                            "value": "template"
+                        },
+                        {
+                            "name": "template",
+                            "value": "={ \"name\": \"hello_world\", \"language\": { \"code\": \"en_US\" } }"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "id": "http-debug-whatsapp",
+            "name": "Debug WhatsApp",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.1,
+            "position": [
+                460,
+                460
+            ],
+            "credentials": {
+                "whatsappApi": {
+                    "id": "",
+                    "name": "WhatsApp Cloud API"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "values": {
+                    "string": [
+                        {
+                            "name": "phone_id",
+                            "value": "YOUR_PHONE_NUMBER_ID"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "id": "set-phone-id",
+            "name": "Set Config",
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 2,
+            "position": [
+                240,
+                460
+            ]
+        }
+    ],
+    "connections": {
+        "Set Config": {
+            "main": [
+                [
+                    {
+                        "node": "Debug WhatsApp",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    }
+}

@@ -1,0 +1,76 @@
+{
+    "nodes": [
+        {
+            "parameters": {
+                "keepOnlySet": true,
+                "values": {
+                    "string": [
+                        {
+                            "name": "ACCESS_TOKEN",
+                            "value": "PASTE_YOUR_META_TOKEN_HERE"
+                        },
+                        {
+                            "name": "PHONE_NUMBER_ID",
+                            "value": "PASTE_YOUR_PHONE_ID_HERE"
+                        },
+                        {
+                            "name": "RECIPIENT_NUMBER",
+                            "value": "491711745089"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "id": "config-node",
+            "name": "1. ENTER CONFIG HERE",
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 2,
+            "position": [
+                200,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "=https://graph.facebook.com/v20.0/{{$json.PHONE_NUMBER_ID}}/messages",
+                "authentication": "none",
+                "sendBody": true,
+                "contentType": "json",
+                "specifyBody": "json",
+                "jsonBody": "={ \"messaging_product\": \"whatsapp\", \"to\": \"{{$json.RECIPIENT_NUMBER}}\", \"type\": \"template\", \"template\": { \"name\": \"hello_world\", \"language\": { \"code\": \"en_US\" } } }",
+                "sendHeaders": true,
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "Authorization",
+                            "value": "=Bearer {{$json.ACCESS_TOKEN}}"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "id": "send-request",
+            "name": "2. Send Request",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.1,
+            "position": [
+                450,
+                300
+            ]
+        }
+    ],
+    "connections": {
+        "1. ENTER CONFIG HERE": {
+            "main": [
+                [
+                    {
+                        "node": "2. Send Request",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    }
+}
