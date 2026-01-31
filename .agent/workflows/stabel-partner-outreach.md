@@ -6,38 +6,31 @@ description: Run the Agency-led outreach pipeline for Arbeitsbühnen Stabel to f
 
 This workflow is specifically for **Arbeitsbühnen Stabel** to find B2B partners via **741.Studio (Agency)**.
 
-## Step 1: Prospecting (Find Partners)
-**Skill:** `dach-collaboration-outreach`
+## Step 1: Discovery & Pre-Filter
+**Skills:** `dach-collaboration-outreach` (Mode: Discovery) + `dach-qualification`
 
-1.  Input: **Niche** (e.g., Baumpflege, Maler, Hallenbau) and **City** (Würzburg).
-2.  Goal: Find companies with strong local presence or complementary expertise.
-3.  **Action**: Select high-quality prospects.
-4.  **Storage**: Save the results immediately to the `leads/` folder.
-    *   **Filename Format**: `YYYY-MM-DD-stabel-[Niche]-[City].md` (e.g., `2026-01-23-stabel-baumpflege-wuerzburg.md`)
-    *   **Content**: The full table of identified prospects.
+1.  **Search**: Find candidates in the target Niche/City using `dach-collaboration-outreach` (Mode: Discovery).
+2.  **Pre-Qualify** (Optional but recommended): Run `dach-qualification` on the found URLs to remove obvious spam/non-DACH sites automatically.
+3.  **Output**: Create a file `leads/PENDING-stabel-[Niche]-[City].md` with the list of candidates.
+    *   **Columns**: Company, Website, City, Status (e.g., "Pending Review").
 
-## Step 2: Qualification
-**Skill:** `dach-qualification`
+## Step 2: User Review (The "Soft Negotiation" Loop)
+**Action:** 🛑 **STOP and Ask User for Review** 🛑
 
-1.  Filter for real, reputable businesses.
-2.  Ensure they are *not* competitors (other rental firms).
+1.  Present the `leads/PENDING-...md` file to the user.
+2.  **Instruction**: "Please review the list in `[Filename]`. Delete any rows you do NOT want to contact. Mark the rest as 'Approved'."
+3.  **Wait** for user confirmation before proceeding.
 
-## Step 3: Setup (Context)
-**Skill:** `outreach-setup-enhanced`
+## Step 3: Deep Enrichment & Drafting
+**Skills:** `dach-collaboration-outreach` (Mode: Enrichment) + `outreach-setup-enhanced` + `agency-link-collaboration`
 
-1.  Generate the contact brief with founder names and specific hooks.
-2.  **Focus**: Look for "Blog", "News", or "Projects" sections that indicate they might be open to content.
-
-## Step 4: Drafting (Agency Email)
-**Skill:** `agency-link-collaboration`
-
-1.  **Arguments**:
-    *   `Client Name`: "Arbeitsbühnen Stabel" (**Internal Only** - Do not reveal in first email)
-    *   `Agency Name`: "741.Studio"
-    *   `Value Prop`: "Content Exchange & Domain Authority"
-2.  **Output**: Draft the email proposing the Guest Post / Link Exchange collaboration.
-
----
+1.  **Input**: Read the *reviewed* file from Step 2.
+2.  **Enrichment**: For every company left in the list:
+    *   Run `dach-collaboration-outreach` (Mode: Enrichment) to find CEO/Manager LinkedIn and Email.
+3.  **Context**: Run `outreach-setup-enhanced` to generate the Contact Brief and personalization hooks.
+4.  **Drafting**: Immediately generate the outreach email using `agency-link-collaboration`.
+    *   **Arguments**: Client="Arbeitsbühnen Stabel", Agency="741.Studio".
+5.  **Final Output**: Save the fully enriched and drafted leads to `leads/READY-stabel-[Niche]-[City].md`.
 
 ## Usage Example
-> "Find tree care companies in Würzburg for the Stabel content partnership."
+> "Start the Stabel partner outreach for Painters in Würzburg. Let me review the list before you draft emails."

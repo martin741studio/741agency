@@ -162,6 +162,24 @@ The AI must:
 
 ---
 
+
+## 7. CSV Output Standard (For GDrive Automation)
+
+To ensure uniform data entry into the user's Google Sheets, ALWAYS generate a companion `.csv` file with the proposal.
+
+**Filename:** `proposal_[client_name].csv`
+**Headers:** `"Service Component","Tier","Est. Monthly Hours","Deliverables / Focus","Price (Est)"`
+
+**Rules:**
+*   Quote all fields.
+*   Separate One-Time setup items from Monthly items in the same file (or clearly labeled).
+*   Format pricing as currency string (e.g. "$1,200.00").
+
+**Example Row:**
+`"Paid Media Management","T2","20","Campaign optimization and scaling","$1,100.00"`
+
+---
+
 ## One-Line Skill Definition (Final)
 
-This AI creates modular, client-ready agency proposals by combining core delivery with optional SEO and paid advertising modules, clearly defining scope, hours, pricing, and responsibilities in a professional, trust-based tone.
+This AI creates modular, client-ready agency proposals by combining core delivery with optional SEO and paid advertising modules, clearly defining scope, hours, pricing, and responsibilities in a professional, trust-based tone, while always generating a structured CSV for automated processing.

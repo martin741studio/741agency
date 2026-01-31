@@ -1,0 +1,47 @@
+{
+  "auth": {
+    "profiles": {
+      "openai": {
+        "provider": "openai",
+        "mode": "api_key"
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "google/gemini-2.5-pro"
+      },
+      "workspace": "/Users/martindrendel/clawd",
+      "maxConcurrent": 4
+    }
+  },
+  "gateway": {
+    "port": 18789,
+    "mode": "local",
+    "auth": {
+      "mode": "token",
+      "token": "clawdbot-secret-token"
+    }
+  },
+  "channels": {
+    "whatsapp": {}
+  },
+  "plugins": {
+    "entries": {
+      "whatsapp": {
+        "enabled": true
+      }
+    }
+  },
+  "wizard": {
+    "lastRunAt": "2026-01-27T13:53:54.338Z",
+    "lastRunVersion": "2026.1.24-3",
+    "lastRunCommand": "doctor",
+    "lastRunMode": "local"
+  },
+  "meta": {
+    "lastTouchedVersion": "2026.1.24-3",
+    "lastTouchedAt": "2026-01-27T13:53:54.342Z"
+  }
+}

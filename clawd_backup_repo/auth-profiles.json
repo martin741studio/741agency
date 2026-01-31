@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "google": { "provider": "google", "mode": "api_key", "apiKey": "AIzaSyBcXwIJGS1kaYA-zsBznFMOzwmgt0OWAZQ" },
+    "openai": { "provider": "openai", "mode": "api_key", "apiKey": "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" }
+  },
+  "google": { "provider": "google", "mode": "api_key", "apiKey": "AIzaSyBcXwIJGS1kaYA-zsBznFMOzwmgt0OWAZQ" },
+  "openai": { "provider": "openai", "mode": "api_key", "apiKey": "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" }
+}
