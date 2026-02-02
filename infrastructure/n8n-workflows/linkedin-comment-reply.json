@@ -1,0 +1,164 @@
+{
+    "name": "LinkedIn Comment Reply (Clawdbot)",
+    "nodes": [
+        {
+            "parameters": {
+                "postProcessAction": "nothing",
+                "options": {
+                    "customEmailParams": "SUBJECT \"commented on your post\""
+                }
+            },
+            "id": "imap-trigger",
+            "name": "Email Trigger (LinkedIn)",
+            "type": "n8n-nodes-base.emailReadImap",
+            "typeVersion": 2,
+            "position": [
+                460,
+                300
+            ],
+            "credentials": {
+                "imap": {
+                    "id": "YOUR_IMAP_CRED_ID",
+                    "name": "IMAP Account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "jsCode": "const text = $input.item.json.textPlain;\n// Basic parsing logic - needs refinement based on actual email format\nconst commenterMatch = text.match(/(.*?) commented on your post/);\nconst commentMatch = text.match(/\"(.*?)\"/);\n\nreturn {\n  commenter: commenterMatch ? commenterMatch[1] : 'Unknown',\n  comment: commentMatch ? commentMatch[1] : text,\n  postLink: 'https://linkedin.com/' // Placeholder\n};"
+            },
+            "id": "parse-email",
+            "name": "Parse Email Info",
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                680,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "http://172.17.0.1:18789/v1/messages",
+                "sendHeaders": true,
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "Authorization",
+                            "value": "Bearer YOUR_GATEWAY_TOKEN"
+                        },
+                        {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                        }
+                    ]
+                },
+                "sendBody": true,
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "agentId",
+                            "value": "main"
+                        },
+                        {
+                            "name": "message",
+                            "value": "={{ 'SYSTEM / INSTRUCTIONS\\n- Write like Martin: direct, warm, not cringe, not corporate.\\n- 1–2 sentences max.\\n- End with one question when appropriate.\\n- No emojis unless the original comment uses emojis.\\n- Never include links.\\n- Avoid repeating these phrases: {recent_phrases_list}.\\n\\nINPUT\\nPost topic/context: {post_context}\\nComment: ' + $json.comment + '\\nCommenter name: ' + $json.commenter + '\\nGoal: increase genuine conversation\\n\\nOUTPUT JSON\\n{\\n\"reply\": \"...\",\\n\"alt_reply\": \"...\",\\n\"risk_flag\": \"none|sensitive|negative|unclear\",\\n\"why\": \"one short reason\"\\n}' }}"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "id": "clawdbot-reply",
+            "name": "Clawdbot Reply Agent",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4,
+            "position": [
+                900,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "amount": "={{ Math.floor(Math.random() * (17 - 3 + 1) + 3) }}",
+                "unit": "minutes"
+            },
+            "id": "random-delay-reply",
+            "name": "Random Delay",
+            "type": "n8n-nodes-base.wait",
+            "typeVersion": 1,
+            "position": [
+                1020,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "chatId": "YOUR_TELEGRAM_CHAT_ID",
+                "text": "={{ '💬 *New LinkedIn Comment*\\nFrom: ' + $json.commenter + '\\n\\n*Comment:* ' + $json.comment + '\\n\\n*Suggested Reply:*\\n' + $json.response + '\\n\\n[Open Post](' + $json.postLink + ')' }}",
+                "additionalFields": {
+                    "parse_mode": "Markdown"
+                }
+            },
+            "id": "telegram-notify",
+            "name": "Notify Telegram",
+            "type": "n8n-nodes-base.telegram",
+            "typeVersion": 1.2,
+            "position": [
+                1240,
+                300
+            ],
+            "credentials": {
+                "telegramApi": {
+                    "id": "YOUR_TELEGRAM_CRED_ID",
+                    "name": "Telegram Account"
+                }
+            }
+        }
+    ],
+    "connections": {
+        "Email Trigger (LinkedIn)": {
+            "main": [
+                [
+                    {
+                        "node": "Parse Email Info",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Parse Email Info": {
+            "main": [
+                [
+                    {
+                        "node": "Clawdbot Reply Agent",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Clawdbot Reply Agent": {
+            "main": [
+                [
+                    {
+                        "node": "Random Delay",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Random Delay": {
+            "main": [
+                [
+                    {
+                        "node": "Notify Telegram",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    }
+}

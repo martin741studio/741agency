@@ -1,0 +1,272 @@
+{
+    "name": "LinkedIn Lead Finder (Clawdbot)",
+    "nodes": [
+        {
+            "parameters": {
+                "postProcessAction": "nothing",
+                "options": {
+                    "customEmailParams": "SUBJECT \"commented on your post\""
+                }
+            },
+            "id": "imap-trigger-leads",
+            "name": "Email Trigger (LinkedIn)",
+            "type": "n8n-nodes-base.emailReadImap",
+            "typeVersion": 2,
+            "position": [
+                460,
+                300
+            ],
+            "credentials": {
+                "imap": {
+                    "id": "YOUR_IMAP_CRED_ID",
+                    "name": "IMAP Account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "jsCode": "const text = $input.item.json.textPlain;\n// Basic parsing logic\nconst commenterMatch = text.match(/(.*?) commented on your post/);\nconst commentMatch = text.match(/\"(.*?)\"/);\n\nreturn {\n  commenter: commenterMatch ? commenterMatch[1] : 'Unknown',\n  comment: commentMatch ? commentMatch[1] : text,\n  postLink: 'https://linkedin.com/' // Placeholder\n};"
+            },
+            "id": "parse-email-leads",
+            "name": "Parse Email Info",
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                680,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "http://172.17.0.1:18789/v1/messages",
+                "sendHeaders": true,
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "Authorization",
+                            "value": "Bearer YOUR_GATEWAY_TOKEN"
+                        },
+                        {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                        }
+                    ]
+                },
+                "sendBody": true,
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "agentId",
+                            "value": "main"
+                        },
+                        {
+                            "name": "message",
+                            "value": "={{ 'Score this lead (0-10) based on their comment.\\nCommenter: ' + $json.commenter + '\\nComment: ' + $json.comment + '\\n\\nReturn:\\n- score 0–10\\n- reason\\n- suggested DM opener (one sentence, no pitch)\\n\\nReturn valid JSON only.' }}"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "id": "clawdbot-scorer",
+            "name": "Clawdbot Lead Scorer",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4,
+            "position": [
+                900,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "number": [
+                        {
+                            "value1": "={{ $json.score }}",
+                            "operation": "largerEqual",
+                            "value2": 7
+                        }
+                    ]
+                }
+            },
+            "id": "filter-high-intent",
+            "name": "Filter High Intent (>7)",
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 1,
+            "position": [
+                1120,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "authentication": "googleSheetsOAuth2Api",
+                "operation": "append",
+                "documentId": {
+                    "__rl": true,
+                    "value": "1tjfCvhIbDkF27bf-THsXjUWCnsUiICDm7q6k8gk9K8M",
+                    "mode": "id"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": "Lead Queue",
+                    "mode": "name"
+                },
+                "columns": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "Name": "={{ $json.commenter }}",
+                        "Score": "={{ $json.score }}",
+                        "Reason": "={{ $json.reason }}",
+                        "Suggestion": "={{ $json.dm_suggestion }}"
+                    },
+                    "matchingColumns": [],
+                    "schema": [
+                        {
+                            "id": "Name",
+                            "displayName": "Name",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "readOnly": false,
+                            "removed": false
+                        },
+                        {
+                            "id": "Score",
+                            "displayName": "Score",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "number",
+                            "canBeUsedToMatch": true,
+                            "readOnly": false,
+                            "removed": false
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "id": "save-lead",
+            "name": "Save to Queue",
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 4,
+            "position": [
+                1340,
+                200
+            ],
+            "credentials": {
+                "googleSheetsOAuth2Api": {
+                    "id": "YOUR_GOOGLE_SHEETS_CRED_ID",
+                    "name": "Google Sheets Account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "amount": "={{ Math.floor(Math.random() * (17 - 3 + 1) + 3) }}",
+                "unit": "minutes"
+            },
+            "id": "random-wait-leads",
+            "name": "Random Wait",
+            "type": "n8n-nodes-base.wait",
+            "typeVersion": 1,
+            "position": [
+                1460,
+                200
+            ]
+        },
+        {
+            "parameters": {
+                "chatId": "YOUR_TELEGRAM_CHAT_ID",
+                "text": "={{ '🔥 *High Intent Lead Found!*\\nName: ' + $json.commenter + '\\nScore: ' + $json.score + '/10\\n\\nReason: ' + $json.reason + '\\n\\n*Suggested DM:*\\n' + $json.dm_suggestion }}",
+                "additionalFields": {
+                    "parse_mode": "Markdown"
+                }
+            },
+            "id": "telegram-notify-lead",
+            "name": "Notify Telegram",
+            "type": "n8n-nodes-base.telegram",
+            "typeVersion": 1.2,
+            "position": [
+                1560,
+                200
+            ],
+            "credentials": {
+                "telegramApi": {
+                    "id": "YOUR_TELEGRAM_CRED_ID",
+                    "name": "Telegram Account"
+                }
+            }
+        }
+    ],
+    "connections": {
+        "Email Trigger (LinkedIn)": {
+            "main": [
+                [
+                    {
+                        "node": "Parse Email Info",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Parse Email Info": {
+            "main": [
+                [
+                    {
+                        "node": "Clawdbot Lead Scorer",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Clawdbot Lead Scorer": {
+            "main": [
+                [
+                    {
+                        "node": "Filter High Intent (>7)",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Filter High Intent (>7)": {
+            "main": [
+                [
+                    {
+                        "node": "Save to Queue",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Save to Queue": {
+            "main": [
+                [
+                    {
+                        "node": "Random Wait",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Random Wait": {
+            "main": [
+                [
+                    {
+                        "node": "Notify Telegram",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    }
+}
