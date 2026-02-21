@@ -1,0 +1,6 @@
+2026/02/09-11:52:53.276 1afb0e Reusing MANIFEST /Users/martindrendel/741agency/.agent/skills/fb-group-scraper/scripts/fb-profile/Default/Local Storage/leveldb/MANIFEST-000001
+2026/02/09-11:52:53.279 1afb0e Recovering log #3
+2026/02/09-11:52:53.279 1afb0e Reusing old log /Users/martindrendel/741agency/.agent/skills/fb-group-scraper/scripts/fb-profile/Default/Local Storage/leveldb/000003.log 
+2026/02/09-11:55:54.252 1afb0e Level-0 table #5: started
+2026/02/09-11:55:54.258 1afb0e Level-0 table #5: 20546 bytes OK
+2026/02/09-11:55:54.261 1afb0e Delete type=0 #3

@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reload Sanctuary - Monthly Performance Report</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-body: #0F0F0F;
+            --bg-card: #151515;
+            --text-primary: #FBFBFB;
+            --text-secondary: #B0B0B0;
+            --accent: #D9D1CC;
+            /* Sand High-Contrast */
+            --accent-dim: rgba(217, 209, 204, 0.15);
+            --border: #2A2A2A;
+            --success: #27ae60;
+            --highlight-blue: #1B252F;
+            --spacing-unit: 20px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            padding: 40px;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-primary);
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .container {
+            max-width: 800px;
+            /* A4 width approx */
+            margin: 0 auto;
+            background: transparent;
+        }
+
+        /* Utils */
+        .text-accent {
+            color: var(--accent);
+        }
+
+        .text-muted {
+            color: var(--text-secondary);
+        }
+
+        .text-sm {
+            font-size: 0.85rem;
+        }
+
+        .mb-1 {
+            margin-bottom: 10px;
+        }
+
+        .mb-2 {
+            margin-bottom: 20px;
+        }
+
+        .mb-3 {
+            margin-bottom: 30px;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+            margin: 40px 0;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo-img {
+            max-width: 250px;
+            height: auto;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .report-title {
+            font-size: 2.5rem;
+            margin: 20px 0 10px;
+        }
+
+        .report-date {
+            color: var(--text-secondary);
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border-radius: 4px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        /* Executive Summary */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .kpi-card {
+            background: var(--highlight-blue);
+            padding: 20px;
+            border-left: 3px solid var(--accent);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .kpi-value {
+            font-size: 1.6rem;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-primary);
+        }
+
+        .kpi-label {
+            font-size: 0.7rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th {
+            text-align: left;
+            padding: 15px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            border-bottom: 1px solid var(--border);
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+            color: var(--text-secondary);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .campaign-name {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .campaign-notes {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            display: block;
+            line-height: 1.4;
+            opacity: 0.8;
+        }
+
+        /* Conversion Section */
+        .conversion-highlight {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--highlight-blue) 100%);
+            border-left: 4px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .conversion-highlight h3 {
+            color: var(--accent);
+        }
+
+        .conversion-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            text-align: center;
+        }
+
+        .metric-block h4 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            color: var(--accent);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .metric-block span {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+        }
+
+        /* Lists & Bars */
+        .bar-chart-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .bar-label {
+            flex: 0 0 150px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+
+        .bar-track {
+            flex: 1;
+            background: var(--border);
+            height: 6px;
+            border-radius: 3px;
+            margin: 0 15px;
+            position: relative;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 3px;
+        }
+
+        .bar-value {
+            flex: 0 0 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: right;
+            color: var(--accent);
+        }
+
+        /* Two Column */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        ul.clean-list {
+            list-style: none;
+        }
+
+        ul.clean-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        ul.clean-list li:last-child {
+            border-bottom: none;
+        }
+
+        ul.clean-list li span:first-child {
+            color: var(--text-secondary);
+        }
+
+        ul.clean-list li span:last-child {
+            color: var(--text-primary);
+        }
+
+        /* Actions */
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .action-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+            color: var(--accent);
+        }
+
+        .check-list li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 12px;
+            list-style: none;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .check-list li strong {
+            color: var(--text-primary);
+        }
+
+        .check-list li::before {
+            content: "•";
+            color: var(--accent);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 60px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            border-top: 1px solid var(--border);
+            padding-top: 30px;
+            opacity: 0.6;
+            letter-spacing: 1px;
+        }
+
+        blockquote {
+            font-family: 'Poppins', sans-serif;
+            font-style: italic;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin: 20px 0;
+            padding: 0 20px;
+            border-left: 3px solid var(--accent);
+        }
+
+        /* Print Override */
+        @media print {
+            body {
+                background-color: #0F0F0F !important;
+                color: #FBFBFB !important;
+                padding: 0;
+            }
+
+            .card {
+                background-color: #151515 !important;
+                border: 1px solid #333 !important;
+                box-shadow: none;
+            }
+
+            .kpi-card {
+                background-color: #1B252F !important;
+                border-left: 3px solid #D9D1CC !important;
+            }
+
+            .bar-fill {
+                background-color: #D9D1CC !important;
+            }
+
+            .text-accent,
+            .metric-block h4,
+            .kpi-label,
+            .action-card h3 {
+                color: #D9D1CC !important;
+            }
+
+            .divider {
+                background: #333 !important;
+            }
+        }
+
+        /* Mobile Optimization */
+        @media screen and (max-width: 600px) {
+            body {
+                padding: 20px;
+            }
+
+            .container {
+                width: 100%;
+            }
+
+            .report-title {
+                font-size: 1.8rem;
+            }
+
+            /* Stack columns */
+            .two-col,
+            .action-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            /* Conversion Card Adjustments */
+            .conversion-highlight {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .conversion-metrics {
+                grid-template-columns: repeat(3, 1fr);
+                width: 100%;
+                margin-top: 20px;
+                padding-top: 20px;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            /* KPI Grid */
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            /* Table Handling */
+            .card:has(table) {
+                padding: 0;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <header>
+            <img src="https://reloadsanctuary.com/wp-content/uploads/2026/01/Logo-1.png" alt="Reload Sanctuary"
+                class="logo-img">
+            <h1 class="report-title">Google Ads Performance Overview</h1>
+            <div class="report-date">Reporting Period: January 21 – February 20, 2026</div>
+        </header>
+
+        <section class="mb-3">
+            <h2>Executive Summary</h2>
+            <p class="mb-2 text-muted">A month of strong engagement and high mobile traffic, with the Recovery campaign
+                demonstrating significant conversion efficiency.</p>
+
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <span class="kpi-value">2,144</span>
+                    <span class="kpi-label">Total Clicks</span>
+                </div>
+                <div class="kpi-card">
+                    <span class="kpi-value">36,100</span>
+                    <span class="kpi-label">Impressions</span>
+                </div>
+                <div class="kpi-card">
+                    <span class="kpi-value">5.9%</span>
+                    <span class="kpi-label">Overall CTR</span>
+                </div>
+                <div class="kpi-card">
+                    <span class="kpi-value">IDR 3.07k</span>
+                    <span class="kpi-label">Avg. CPC</span>
+                </div>
+                <div class="kpi-card">
+                    <span class="kpi-value">IDR 6.58m</span>
+                    <span class="kpi-label">Total Spend</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="mb-3">
+            <h2>Campaign Breakdown</h2>
+            <div class="card" style="padding: 0;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Campaign</th>
+                            <th>Spend (IDR)</th>
+                            <th>Clicks</th>
+                            <th>CTR</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <span class="campaign-name">Search – Gym / Classes</span>
+                            </td>
+                            <td>3,690,362</td>
+                            <td>1,065</td>
+                            <td>6.23%</td>
+                            <td><span class="campaign-notes">Highest volume driver. Consistent traffic.</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="campaign-name">Search – Wellness & Recovery</span>
+                            </td>
+                            <td>1,764,561</td>
+                            <td>248</td>
+                            <td>8.16%</td>
+                            <td><span class="campaign-notes"><strong>21 Conversions</strong> @ IDR 85k CPA. High
+                                    efficiency.</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="campaign-name">PMAX (Performance Max)</span>
+                            </td>
+                            <td>1,069,571</td>
+                            <td>822</td>
+                            <td>5.16%</td>
+                            <td><span class="campaign-notes">Broad reach, lower intent than Search.</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="campaign-name">Search – Brand</span>
+                            </td>
+                            <td>53,538</td>
+                            <td>9</td>
+                            <td>10.71%</td>
+                            <td><span class="campaign-notes">Minimal spend, high relevance.</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="mb-3">
+            <div class="card conversion-highlight">
+                <div style="flex: 1; padding-right: 20px;">
+                    <h3 style="margin-bottom: 10px;">Recovery Campaign – High Intent Performance</h3>
+                    <p class="text-muted text-sm" style="margin-bottom: 15px;">Targeting: Sauna, Ice Bath, Massage</p>
+                    <p class="text-sm">This specific segment is showing outsized returns. The <strong>8.17% Conversion
+                            Rate</strong> indicates extremely high commercial intent from users searching for recovery
+                        specifically. Opportunity to scale budgets here next month.</p>
+                </div>
+                <div class="conversion-metrics" style="grid-template-columns: repeat(5, 1fr); padding-top:10px;">
+                    <div class="metric-block">
+                        <h4>3,156</h4>
+                        <span>Impr.</span>
+                    </div>
+                    <div class="metric-block">
+                        <h4>257</h4>
+                        <span>Clicks</span>
+                    </div>
+                    <div class="metric-block">
+                        <h4>21</h4>
+                        <span>Conv.</span>
+                    </div>
+                    <div class="metric-block">
+                        <h4>8.17%</h4>
+                        <span>Rate</span>
+                    </div>
+                    <div class="metric-block">
+                        <h4>85k</h4>
+                        <span>CPA</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <div class="two-col mb-3">
+            <section>
+                <h2>Top Segments (CTR)</h2>
+                <p class="text-muted mb-2 text-sm">Niche segments showing highest engagement.</p>
+
+                <div class="bar-chart-row">
+                    <div class="bar-label">Wellness & Recovery</div>
+                    <div class="bar-track">
+                        <div class="bar-fill" style="width: 82%;"></div>
+                    </div>
+                    <div class="bar-value">8.16%</div>
+                </div>
+                <div class="bar-chart-row">
+                    <div class="bar-label">
+                        Premium Gym
+                        <span style="display:block; font-size:0.7rem; color:#999; font-weight:normal;">701 clicks</span>
+                    </div>
+                    <div class="bar-track">
+                        <div class="bar-fill" style="width: 69%;"></div>
+                    </div>
+                    <div class="bar-value">6.86%</div>
+                </div>
+                <div class="bar-chart-row">
+                    <div class="bar-label">HYROX / Functional</div>
+                    <div class="bar-track">
+                        <div class="bar-fill" style="width: 92%;"></div>
+                    </div>
+                    <div class="bar-value">9.26%</div>
+                </div>
+                <div class="bar-chart-row">
+                    <div class="bar-label">Cold Plunge</div>
+                    <div class="bar-track">
+                        <div class="bar-fill" style="width: 90%;"></div>
+                    </div>
+                    <div class="bar-value">>9.0%</div>
+                </div>
+            </section>
+
+            <section>
+                <h2>Keyword Drivers</h2>
+                <p class="text-muted mb-2 text-sm">Top volume search terms.</p>
+                <ul class="clean-list">
+                    <li><span>gym bali</span> <span style="font-weight: 600;">345 clicks</span></li>
+                    <li><span>fitness in bali</span> <span style="font-weight: 600;">207 clicks</span></li>
+                    <li><span>yoga near me</span> <span style="font-weight: 600;">105 clicks</span></li>
+                    <li><span>sauna near me</span> <span style="font-weight: 600;">75 clicks</span></li>
+                </ul>
+                <p class="text-muted text-sm" style="margin-top: 15px;"><em>Observation: Strong "near me" geo-intent
+                        highlights importance of local presence (GMB).</em></p>
+            </section>
+        </div>
+
+        <section class="mb-3">
+            <div class="card" style="background: #2C3E50; color: white;">
+                <div class="two-col" style="align-items: center;">
+                    <div>
+                        <h2 style="color: white; border-bottom: 1px solid rgba(255,255,255,0.2);">Device & Network</h2>
+                        <div style="margin-top: 20px;">
+                            <h3 style="color: var(--accent); font-size: 2.5rem; margin-bottom: 5px;">93%</h3>
+                            <p style="text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; opacity: 0.8;">
+                                Mobile Traffic</p>
+                        </div>
+                    </div>
+                    <div>
+                        <ul class="clean-list" style="border-top: 1px solid rgba(255,255,255,0.1);">
+                            <li style="border-color: rgba(255,255,255,0.1);">
+                                <span>Google Search (Clicks)</span>
+                                <span>61.7%</span>
+                            </li>
+                            <li style="border-color: rgba(255,255,255,0.1);">
+                                <span>Cross-network (Clicks)</span>
+                                <span>38.3%</span>
+                            </li>
+                            <li
+                                style="border-color: rgba(255,255,255,0.1); margin-top: 10px; padding-top: 10px; border-top: 1px dashed rgba(255,255,255,0.1);">
+                                <span>Search (Cost)</span>
+                                <span>83.7%</span>
+                            </li>
+                            <li style="border-bottom: none;">
+                                <span>Cross-network (Cost)</span>
+                                <span>16.3%</span>
+                            </li>
+                        </ul>
+                        <p style="font-size: 0.85rem; opacity: 0.7; margin-top: 10px;">High search cost correlates with
+                            higher intent traffic.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="mb-3">
+            <h2>Time-of-Day Performance</h2>
+            <div class="card" style="display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                    <h3 style="color: var(--accent); margin-bottom: 5px;">9AM – 4PM</h3>
+                    <p class="text-muted text-sm">Peak Performance Window</p>
+                </div>
+                <div style="text-align: right;">
+                    <p style="margin-bottom: 5px;"><strong>Secondary:</strong> Evening Engagement</p>
+                    <p class="text-muted text-sm">Potential for schedule bid optimization.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="mb-3">
+            <h2>Optimization Roadmap</h2>
+            <p class="mb-2 text-muted">Strategic actions for the upcoming month.</p>
+
+            <div class="action-grid">
+                <div class="action-card card">
+                    <h3>Immediate Actions</h3>
+                    <ul class="check-list">
+                        <li>Switch Recovery campaign to <strong>Maximize Conversions</strong> (controlled test).</li>
+                        <li>Create dedicated "Sauna" ad group to capture specific intent.</li>
+                        <li>Add Image Extensions to Search ads for visual dominance.</li>
+                        <li>Complete advertiser verification to improve trust.</li>
+                    </ul>
+                </div>
+                <div class="action-card card">
+                    <h3>Growth Actions</h3>
+                    <ul class="check-list">
+                        <li>Scale <strong>HYROX</strong> niche targeting (high engagement).</li>
+                        <li>Expand high-intent recovery keywords (e.g. "Contrast Therapy").</li>
+                        <li>Refine yoga positioning (105 clicks, improve conversion).</li>
+                        <li>Evaluate PMAX conversion quality vs Search.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <blockquote>
+                "We are entering the optimization and intelligent scaling phase for February–March. The account
+                structure is sound, and conversion efficiency in key wellness segments confirms our premium market fit."
+            </blockquote>
+            <p style="margin-top: 30px;">RELOAD SANCTUARY • MONTHLY PERFORMANCE REPORT • 2026</p>
+        </footer>
+
+    </div>
+
+</body>
+
+</html>

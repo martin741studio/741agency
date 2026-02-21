@@ -1,0 +1,38 @@
+{
+    "groups": [
+        "https://www.facebook.com/groups/850200526646643/",
+        "https://www.facebook.com/groups/2171587506393898/",
+        "https://www.facebook.com/groups/1283334822856702/",
+        "https://www.facebook.com/groups/369421493493424/",
+        "https://www.facebook.com/groups/145694065560764/",
+        "https://www.facebook.com/groups/603074405686376/"
+    ],
+    "include_keywords": [
+        "sales",
+        "sales manager",
+        "closer",
+        "setter",
+        "SDR",
+        "web design",
+        "wordpress",
+        "elementor",
+        "graphic design",
+        "seo",
+        "google ads",
+        "automation",
+        "crm",
+        "lead management",
+        "bali",
+        "canggu",
+        "denpasar",
+        "next.js",
+        "lead router",
+        "database"
+    ],
+    "exclude_keywords": [
+        "mlm",
+        "crypto",
+        "unpaid",
+        "intern"
+    ]
+}

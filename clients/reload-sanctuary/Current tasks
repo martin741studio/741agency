@@ -1,0 +1,41 @@
+# Current Tasks: Reload Sanctuary
+
+## 🚨 HIGH PRIORITY (Critical Fixes)
+- [ ] **Claim Apple Maps:** Create listing on Apple Maps Connect. (Currently missing)
+- [ ] **Schema Markup:** Implement `LocalBusiness` and `Gym` schema (missing rich snippets).
+- [ ] **Yoast Configuration:** proper configuration (currently defaults only).
+
+## 📅 This Week's Focus
+- [ ] **Ray Onboarding:** Ensure Ray understands `ray_instructions.md`.
+- [ ] **Local SEO:** Check Google Business Profile categories (ensure "Fitness Center", "Sauna", "Restaurant" are secondary).
+- [ ] **Reviews Management:** Audit Google Maps reviews velocity & sentiment; ensure replies are active.
+
+## ⚠️ Website Improvements (from Audit)
+- [ ] **Internal Linking:** Improve contextual linking (currently weak).
+- [ ] **Content/Structure:** Address "3 Kings" rule (low text density on homepage).
+- [ ] **Performance:** Image optimization (WebP conversion) & consider Cloudflare CDN.
+
+## ⏳ Long Term / Ongoing
+- [ ] **Backlinks:** Strategy for increasing Domain Authority (currently low).
+- [ ] **Citations:** Build Bali/Travel directory citations.
+
+## 🔍 Backlog / To Verify (From Audit Details)
+- [ ] **Google Map Title:** Optimize to "Reload Sanctuary - Gym & Wellness".
+- [ ] **GMB Hours:** Confirm exact working hours on Google Maps.
+- [ ] **TripAdvisor:** Check listing status (unknown).
+- [ ] **Legal Name:** Confirm official PT name for citations.
+- [ ] **Email:** Confirm `hello@reloadsanctuary.com` is the primary contact.
+- [ ] **Competitor Ads:** Check "Gym Canggu" ads for sponsored competitors.
+- [ ] **Facebook Page:** Verify correct link on all directories.
+- [ ] **Rich Results:** Implement `Product` schema in addition to `LocalBusiness`.
+
+## ✅ Accomplished / Completed
+*   **[x] Fix Analytics:** Install Google Tag Manager & GA4.
+*   **[x] Fix H1 & Metas:** Add descriptive H1 to homepage & unique Meta Descriptions.
+*   **[x] Campaign Setup:** Created `campaign_tracker.md` with active Meta/Google campaigns.
+*   **[x] Meta Pixel:** Confirmed installation & activity.
+*   **[x] Google Business Profile:** Listing is Claimed & Verified.
+*   **[x] Core Web Vitals:** Site is Mobile Responsive & SSL Secured.
+*   **[x] Tech Stack:** WordPress & Elementor Pro are up to date.
+*   **[x] Server:** LiteSpeed caching is active.
+*   **[x] Branding:** High-quality assets and consistent NAP (Name, Address, Phone) on site.
