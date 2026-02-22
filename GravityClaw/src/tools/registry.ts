@@ -5,6 +5,7 @@ import { executeCommandTool } from './shell.js';
 import { scrapeFacebookGroupsTool } from './facebook_scraper.js';
 import { delegateTaskTool } from './swarm.js';
 import { runWorkflowTool, resumeWorkflowTool } from './workflow.js';
+import { youtubeTranscriptTool } from './youtube_transcript.js';
 
 export interface Tool {
     name: string;
@@ -39,3 +40,4 @@ registry.register(scrapeFacebookGroupsTool);
 registry.register(delegateTaskTool);
 registry.register(runWorkflowTool);
 registry.register(resumeWorkflowTool);
+registry.register(youtubeTranscriptTool);

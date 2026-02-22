@@ -38,28 +38,34 @@ export class LLM {
         const providers: { name: string, provider: LLMProvider }[] = [];
 
         // 1. Primary: OpenRouter (Claude/GPT-4o via aggregator)
-        if (config.openrouterApiKey) {
+        if (config.openrouterApiKey && !config.openrouterApiKey.startsWith('sk-or-placeholder')) {
             providers.push({
                 name: 'OpenRouter (Claude)',
                 provider: new OpenRouterProvider(tools, config.openrouterApiKey, 'anthropic/claude-3.5-sonnet')
             });
         }
 
-        // 2. Secondary/Fallback: Gemini (Flash)
+        // 2. High-Tier Fallback: Gemini Pro (User's paid "Ultra" equivalent)
         providers.push({
-            name: 'Gemini (Flash)',
-            provider: new GeminiProvider(tools)
+            name: 'Gemini Pro (Ultra)',
+            provider: new GeminiProvider(tools, 'pro')
         });
 
-        // 3. Tertiary/Fallback: OpenAI
-        if (config.openaiApiKey) {
+        // 3. Efficiency/Speed Fallback: Gemini Flash
+        providers.push({
+            name: 'Gemini Flash',
+            provider: new GeminiProvider(tools, 'flash')
+        });
+
+        // 4. Tertiary/Final Fallback: OpenAI
+        if (config.openaiApiKey && !config.openaiApiKey.startsWith('sk-proj-placeholder')) {
             providers.push({
                 name: 'OpenAI (GPT-4o)',
                 provider: new OpenAIProvider(tools, config.openaiApiKey, 'gpt-4o')
             });
         }
 
-        console.log(`[LLM] Initializing with ${providers.length} providers (OpenRouter Primary).`);
+        console.log(`[LLM] Initializing with ${providers.length} providers in Failover Chain.`);
         this.chat = new FailoverProvider(providers);
     }
 }

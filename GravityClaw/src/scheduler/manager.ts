@@ -136,8 +136,8 @@ export class SchedulerManager {
             Keep it warm but professional. Use Markdown.`;
 
             // C. Truncate prompt if extremely long (Safety Guard)
-            // Roughly 4 tokens per char, so 40k chars ~ 10k tokens
-            const safePrompt = prompt.length > 40000 ? prompt.substring(0, 40000) + '... [TRUNCATED DUE TO LENGTH]' : prompt;
+            // Roughly 4 tokens per char, so 15k chars ~ 4k-6k tokens (Safe for 30k TPM)
+            const safePrompt = prompt.length > 15000 ? prompt.substring(0, 15000) + '... [TRUNCATED DUE TO LENGTH]' : prompt;
 
             const response = await this.agent.run(safePrompt);
 

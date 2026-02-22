@@ -12,6 +12,7 @@ import { searchWebTool } from './tools/search.js';
 import { executeCommandTool } from './tools/shell.js';
 import { listFilesTool, readFileTool, writeFileTool } from './tools/workspace.js';
 import { scrapeFacebookGroupsTool } from './tools/facebook_scraper.js';
+import { youtubeTranscriptTool } from './tools/youtube_transcript.js';
 import { registry } from './tools/registry.js';
 import { transcribeAudio } from './transcription.js';
 import * as fs from 'fs';
@@ -100,6 +101,7 @@ async function main() {
     registry.register(searchWebTool);
     registry.register(executeCommandTool);
     registry.register(scrapeFacebookGroupsTool);
+    registry.register(youtubeTranscriptTool);
 
     // Initialize Scheduler
     schedulerManager.setBot(bot);

@@ -53,9 +53,9 @@ export const config: Config = {
 };
 
 console.log(`[Config] Provider Check:`);
-console.log(`- Gemini: ENABLED`);
+console.log(`- Gemini (Flash/Pro): ENABLED`);
 console.log(`- OpenAI: ${config.openaiApiKey ? 'ENABLED' : 'MISSING'}`);
-console.log(`- OpenRouter: ${config.openrouterApiKey ? 'ENABLED' : 'MISSING'}`);
+console.log(`- OpenRouter: ${config.openrouterApiKey ? 'ENABLED' : 'MISSING (Check OPENROUTER_API_KEY in .env)'}`);
 console.log(`- ElevenLabs: ${config.elevenlabsApiKey ? 'ENABLED' : 'MISSING'}`);
 
 if (isNaN(config.allowedUserId)) {
