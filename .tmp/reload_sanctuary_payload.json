@@ -1,0 +1,21 @@
+{
+    "invoice_metadata": {
+        "invoice_number": "INV-2026-RS-001",
+        "issue_date": "2026-02-22",
+        "currency": "IDR"
+    },
+    "client_details": {
+        "name": "Reload Sanctuary",
+        "address": "Jalan Canggu Padang Linjong No.8, Canggu, Bali, 80351",
+        "contact": "+6281180890319"
+    },
+    "services": [
+        {
+            "description": "Paid Advertising Service (Meta & Google Ads)",
+            "tier": "T2",
+            "amount": 20000000,
+            "details": "High-intent capture and lifestyle desire creation."
+        }
+    ],
+    "total_amount": 20000000
+}

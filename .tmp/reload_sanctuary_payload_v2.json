@@ -1,0 +1,24 @@
+{
+    "invoice_metadata": {
+        "invoice_number": "21022026",
+        "issue_date": "21-Feb-2026",
+        "due_date": "28-Feb-2026",
+        "currency": "Rp"
+    },
+    "client_details": {
+        "name": "Reload Sanctuary",
+        "address": "Jalan Canggu Padang Linjong No.8, Canggu, Bali, 80351"
+    },
+    "items": [
+        {
+            "item": "Monthly",
+            "description": "Marketing Services – Paid Ads Management (Meta & Google Ads) for Reload Sanctuary",
+            "quantity": 1,
+            "price": 20000000
+        }
+    ],
+    "tax": {
+        "withholding_rate": 0.02,
+        "description": "PPh 23 (2%) is withheld and paid by the Client to the Indonesian Tax Authority."
+    }
+}
