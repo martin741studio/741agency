@@ -3,8 +3,6 @@
 __pycache__
 .DS_Store
 *.pyc
-GravityClaw/
-GravityClaw_Cloud/
 node_modules/
 dist/
 data/
