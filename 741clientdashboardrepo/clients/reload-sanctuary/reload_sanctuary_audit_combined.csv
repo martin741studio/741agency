@@ -1,0 +1,57 @@
+Category,Metric,Value,Status,Notes
+Google Maps,Ranking,> 20,🔴,Not ranking in top 3 Pack for "Gym Canggu"
+Google Maps,Desktop Ranking,n/a,🔴,Manual check required
+Google Maps,Mobile Ranking,n/a,🔴,Manual check required
+Google Maps,Website,https://reloadsanctuary.com/,✅,Matches GMB
+Google Maps,Google Business Link,View Map,✅,Listing exists (Jalan Canggu Padang Linjong No.8)
+Google Maps,Status,Claimed,✅,Appears managed
+Google Maps,Verification,Verified,✅,
+Google Maps,Title,Reload Sanctuary,🟡,"Could be optimized (e.g., ""Reload Sanctuary - Gym & Wellness"")"
+Google Maps,Description,"""Unlock unlimited access...""",✅,Present
+Google Maps,Phone,+6281180890319,✅,Matches WhatsApp
+Google Maps,Schedule URL,.../bookaclass/,✅,Linked correctly
+Google Maps,Categories,"Gym, Wellness Center",🟡,"Ensure ""Fitness Center"", ""Sauna"", ""Restaurant"" are secondary"
+Google Maps,Services,"Gym, Recovery, Ice Bath, Sauna",✅,Matches Website
+Google Maps,Working Hours,Check GMB,⚠️,Confirm 24/7 or specific hours
+Google Maps,Address,"Canggu, Bali",✅,Consistent
+Google Maps,Chat,WhatsApp,✅,Functional on site
+Google Maps,Photos/Branding,High Quality,✅,Premium aesthetic
+Google Maps,Reviews,Manual Check,⚠️,Need to audit velocity & sentiment
+Google Maps,Replies,Check Owner,⚠️,Are reviews being replied to?
+Google Maps,Updates/Content,Active,✅,Instagram/Site active
+Website & Technical,CMS,WordPress,✅,Built with Elementor Pro
+Website & Technical,Up to date?,Yes,✅,WP 6.x / Elementor 3.x detected
+Website & Technical,Rich Results,None,🔴,"Missing LocalBusiness, Gym, Product Schema"
+Website & Technical,Indexed,Yes,✅,Pages appearing in Google
+Website & Technical,Internal Linking,Weak,🟡,Mostly nav menu; little contextual linking
+Website & Technical,Outbound Links,Normal,✅,"Socials, WhatsApp"
+Website & Technical,Maps Embed,Yes,✅,On "Location" page
+Website & Technical,Mobile Responsive,Yes,✅,Elementor Responsive handling is good
+Website & Technical,Favicon,Yes,✅,Present
+Website & Technical,H1-H3,MISSING H1,🔴,CRITICAL: No H1 on Homepage. Headers are visual only.
+Website & Technical,Paragraph Definition,Low Text,🟡,"""3 Kings"" Rule broken (Sparse text, mostly images)"
+Website & Technical,Going Online Check,Passed,✅,
+Website & Technical,SSL Certificate,Valid,✅,
+Website & Technical,Socials on Site,Yes,✅,"IG, WhatsApp linked"
+Website & Technical,Performance,~50-60%,🟡,heavy images/DOM (Elementor). Needs separate Mobile speed audit.
+Website & Technical,Cache,LiteSpeed,✅,Server-level caching detected
+Website & Technical,Image Opt,Mixed,🟡,Some large assets. Needs WebP conversion.
+Website & Technical,CDN,None,🔴,Cloudflare recommended for global speed
+Website & Technical,Server Speed,LiteSpeed,✅,Good foundational tech
+Website & Technical,SEO Measures,None Detected,🔴,"CRITICAL: No Meta Descriptions, No SEO Title optimization"
+Website & Technical,Yoast,Installed,🟡,Plugin present but not configured properly (defaults only)
+Off-Page & Competitors,Sponsored Competitors,Check Ads,⚪️,Look for "Gym Canggu" ads
+Off-Page & Competitors,Best Backlinks,Low Authority,🔴,Domain Authority likely < 10
+Off-Page & Competitors,Rating,0.5,🔴,Estimated Trust Score
+Off-Page & Competitors,Citations,Low,🔴,Need to build Bali/Travel directory citations
+Off-Page & Competitors,Meta Listing,Check,⚪️,Facebook Page linked?
+Off-Page & Competitors,Apple Maps Entry,MISSING,🔴,CRITICAL: Not found in Apple Maps search
+Off-Page & Competitors,Analytics Tracking,MISSING,🔴,"CRITICAL: No GA4, No GTM, No Pixel detected in source"
+,,,,
+Executive Summary,Overall Health Score,Medium 🟡,🟡,"Visually striking but foundational SEO gaps (H1, Metas)."
+Executive Summary,Verdict - SEO,Not Ready,🔴,Fix foundational tagging before scaling.
+Executive Summary,Verdict - Ads,Ready,🟢,Landing page is high-converting and visual.
+,,,,
+Strategic Recommendations,Phase 1 (Days 1-7),Technical Fix Sprint,🔴,Add H1 to Homepage; Write Meta Descriptions; Install Schema.
+Strategic Recommendations,Phase 2 (Days 8-30),Content Expansion,🟡,"Expand homepage text with keywords; Create dedicated service pages (Gym, Sauna)."
+Strategic Recommendations,Phase 3 (Days 30+),Local Authority,🟢,Generate Google Reviews; Build local citations.
