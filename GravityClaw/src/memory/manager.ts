@@ -9,7 +9,7 @@ import { encrypt, decrypt } from '../utils/crypto.js';
 import { MultimodalMessage, isMultimodal, getMediaHash } from '../agent/multimodal.js';
 
 const genAI = new GoogleGenerativeAI(config.geminiApiKey);
-const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
 
 export class MemoryManager {
     // 1. Log Conversation (Hybrid)

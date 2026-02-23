@@ -9,7 +9,7 @@ import { MultimodalMessage } from './multimodal.js';
 export class FailoverProvider implements LLMProvider {
     constructor(private providers: { name: string, provider: LLMProvider }[]) { }
 
-    async sendMessage(message: string | any[] | MultimodalMessage, options?: { modelPreference?: 'high' | 'efficient' }): Promise<LLMResult> {
+    async sendMessage(message: string | any[] | MultimodalMessage, options?: { modelPreference?: 'high' | 'efficient', history?: any[], systemPrompt?: string }): Promise<LLMResult> {
         const errors: string[] = [];
         for (const { name, provider } of this.providers) {
             try {
@@ -28,9 +28,9 @@ export class FailoverProvider implements LLMProvider {
 }
 
 export class LLM {
-    public chat: LLMProvider;
+    public chat: FailoverProvider;
 
-    async sendMessage(message: string | any[] | MultimodalMessage, options?: { modelPreference?: 'high' | 'efficient' }): Promise<LLMResult> {
+    async sendMessage(message: string | any[] | MultimodalMessage, options?: { modelPreference?: 'high' | 'efficient', history?: any[], systemPrompt?: string }): Promise<LLMResult> {
         return this.chat.sendMessage(message, options);
     }
 
@@ -38,24 +38,28 @@ export class LLM {
         const providers: { name: string, provider: LLMProvider }[] = [];
 
         // 1. Primary: OpenRouter (Claude/GPT-4o via aggregator)
-        if (config.openrouterApiKey && !config.openrouterApiKey.startsWith('sk-or-placeholder')) {
+        if (config.openrouterApiKey && !config.openrouterApiKey.includes('placeholder')) {
             providers.push({
                 name: 'OpenRouter (Claude)',
                 provider: new OpenRouterProvider(tools, config.openrouterApiKey, 'anthropic/claude-3.5-sonnet')
             });
         }
 
-        // 2. High-Tier Fallback: Gemini Pro (User's paid "Ultra" equivalent)
-        providers.push({
-            name: 'Gemini Pro (Ultra)',
-            provider: new GeminiProvider(tools, 'pro')
-        });
+        // 2. High-Tier Fallback: Gemini 1.5 Pro (Ultra equivalent)
+        if (config.geminiApiKey) {
+            providers.push({
+                name: 'Gemini 1.5 Pro',
+                provider: new GeminiProvider(tools, 'pro')
+            });
+        }
 
-        // 3. Efficiency/Speed Fallback: Gemini Flash
-        providers.push({
-            name: 'Gemini Flash',
-            provider: new GeminiProvider(tools, 'flash')
-        });
+        // 3. Efficiency/Speed Fallback: Gemini 1.5 Flash
+        if (config.geminiApiKey) {
+            providers.push({
+                name: 'Gemini 1.5 Flash',
+                provider: new GeminiProvider(tools, 'flash')
+            });
+        }
 
         // 4. Tertiary/Final Fallback: OpenAI
         if (config.openaiApiKey && !config.openaiApiKey.startsWith('sk-proj-placeholder')) {

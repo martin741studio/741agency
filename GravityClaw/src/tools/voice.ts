@@ -65,8 +65,8 @@ export const speakTool: Tool = {
             }
 
             // Handle stream consumption robustly
+            const fileStream = fs.createWriteStream(filePath);
             if ((response as any).pipe) {
-                const fileStream = fs.createWriteStream(filePath);
                 await new Promise<void>((resolve, reject) => {
                     (response as any).pipe(fileStream);
                     fileStream.on('finish', () => resolve());
@@ -74,8 +74,14 @@ export const speakTool: Tool = {
                 });
             } else {
                 // If it's a web stream (ReadableStream)
-                const arrayBuffer = await (response as any).arrayBuffer();
-                fs.writeFileSync(filePath, Buffer.from(arrayBuffer));
+                const reader = (response as any).getReader();
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    fileStream.write(Buffer.from(value));
+                }
+                fileStream.end();
+                await new Promise<void>((resolve) => fileStream.on('finish', resolve));
             }
 
             // Send to Telegram

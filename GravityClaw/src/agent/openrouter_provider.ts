@@ -1,5 +1,6 @@
 import { LLMProvider, LLMResult } from './provider.js';
 import { Tool } from '../tools/registry.js';
+import { MultimodalMessage } from './multimodal.js';
 // OpenRouter uses standard OpenAI-like fetching for chat completions
 import fetch from 'node-fetch';
 
@@ -15,29 +16,43 @@ export class OpenRouterProvider implements LLMProvider {
         this.tools = tools;
 
         // System context
-        this.history.push({
-            role: 'system',
-            content: 'You are Gravity Claw, a helpful personal AI assistant. You run locally on my machine. Use tools when needed.'
-        });
     }
 
-    async sendMessage(message: string | any[]): Promise<LLMResult> {
-        // Handle Gemini-style part arrays or simple strings
-        if (Array.isArray(message)) {
-            // This is likely a set of function responses
-            for (const item of message) {
-                if (item.functionResponse) {
-                    this.history.push({
-                        role: 'tool',
-                        tool_call_id: item.functionResponse.id || item.functionResponse.name,
-                        content: typeof item.functionResponse.response.output === 'string'
-                            ? item.functionResponse.response.output
-                            : JSON.stringify(item.functionResponse.response.output)
-                    });
+    async sendMessage(message: string | any[] | MultimodalMessage, options?: { history?: any[] }): Promise<LLMResult> {
+        let messages = options?.history ? [...options.history] : [
+            {
+                role: 'system',
+                content: 'You are Gravity Claw, a helpful personal AI assistant. You run locally on my machine. Use tools when needed.'
+            }
+        ];
+
+        if (typeof message === 'string') {
+            messages.push({ role: 'user', content: message });
+        } else if (Array.isArray(message)) {
+            // Check if it's already a formatted messages array from executor
+            if (message.length > 0 && (message[0] as any).role) {
+                messages.push(...(message as any[]));
+            } else {
+                // This is likely a set of function responses or Gemini-style parts
+                for (const item of message) {
+                    if (item.functionResponse) {
+                        messages.push({
+                            role: 'tool',
+                            tool_call_id: item.functionResponse.id || item.functionResponse.name,
+                            content: typeof item.functionResponse.response.output === 'string'
+                                ? item.functionResponse.response.output
+                                : JSON.stringify(item.functionResponse.response.output)
+                        });
+                    } else if (item.text) { // Handle simple text parts if not a function response
+                        messages.push({ role: 'user', content: item.text });
+                    }
+                    // Add more handling for other MultimodalMessage parts if necessary
                 }
             }
         } else {
-            this.history.push({ role: 'user', content: message });
+            // Assume MultimodalMessage is a complex object that needs to be added as a user message
+            // This part might need refinement based on the actual structure of MultimodalMessage
+            messages.push({ role: 'user', content: message });
         }
 
         // Map tools to OpenAI tool format
@@ -61,7 +76,7 @@ export class OpenRouterProvider implements LLMProvider {
                 },
                 body: JSON.stringify({
                     model: this.model,
-                    messages: this.history,
+                    messages: messages,
                     tools: openAiTools
                 })
             });
@@ -74,9 +89,6 @@ export class OpenRouterProvider implements LLMProvider {
 
             const choice = data.choices[0];
             const assistantMsg = choice.message;
-
-            // Store for history
-            this.history.push(assistantMsg);
 
             // Interface adaptation for the existing loop in engine.ts
             return {

@@ -1,50 +1,70 @@
 import { GoogleGenerativeAI, ChatSession, Part } from '@google/generative-ai';
-import { LLMProvider, LLMResult } from './provider.js';
+import { LLMProvider, LLMResult, LLMResponse } from './provider.js';
 import { Tool } from '../tools/registry.js';
 import { config } from '../config.js';
 import { MultimodalMessage, isMultimodal } from './multimodal.js';
 
 export class GeminiProvider implements LLMProvider {
-    private chat: ChatSession;
-    private model: any;
+    private genAI: GoogleGenerativeAI;
     private modelName: string;
+    private tools: Tool[];
 
     constructor(tools: Tool[], tier: 'flash' | 'pro' = 'flash') {
-        const genAI = new GoogleGenerativeAI(config.geminiApiKey);
+        this.genAI = new GoogleGenerativeAI(config.geminiApiKey);
+        this.modelName = tier === 'pro' ? 'gemini-1.5-pro' : 'gemini-1.5-flash';
+        this.tools = tools;
+    }
 
-        const functionDeclarations = tools.map(tool => ({
+    async sendMessage(message: string | any[] | MultimodalMessage, options?: { history?: any[], systemPrompt?: string }): Promise<LLMResult> {
+        const functionDeclarations = this.tools.map(tool => ({
             name: tool.name,
             description: tool.description,
             parameters: tool.parameters as any,
         }));
 
-        this.modelName = tier === 'pro' ? 'gemini-2.0-pro-exp-02-05' : 'gemini-2.0-flash';
-
-        const options: any = {
+        const modelOptions: any = {
             model: this.modelName
         };
 
-        if (functionDeclarations.length > 0) {
-            options.tools = [{ functionDeclarations }];
+        if (options?.systemPrompt) {
+            modelOptions.systemInstruction = options.systemPrompt;
         }
 
-        this.model = genAI.getGenerativeModel(options);
+        if (functionDeclarations.length > 0) {
+            modelOptions.tools = [{ functionDeclarations }];
+        }
 
-        const initialHistory = [
-            {
-                role: 'user',
-                parts: [{ text: 'You are Gravity Claw, a helpful personal AI assistant. You run locally on my machine. You have access to tools to help the user.' }],
-            },
-            {
-                role: 'model',
-                parts: [{ text: 'Understood. I am Gravity Claw. I am ready to help.' }],
-            },
-        ];
+        const model = this.genAI.getGenerativeModel(modelOptions);
 
-        this.chat = this.model.startChat({ history: initialHistory });
-    }
+        // Gemini history MUST start with user, and cannot contain 'system' role
+        const history = (options?.history || [])
+            .filter(m => m.role !== 'system')
+            .map(m => {
+                if (m.role === 'tool') {
+                    // Gemini expects 'function' role for tool responses in history
+                    return {
+                        role: 'function',
+                        parts: [{ functionResponse: { name: m.tool_call_id, response: { content: m.content } } }]
+                    };
+                }
+                if (m.role === 'assistant') {
+                    const parts: any[] = [];
+                    if (m.content) parts.push({ text: m.content });
+                    if (m.tool_calls) {
+                        parts.push(...m.tool_calls.map((tc: any) => ({
+                            functionCall: {
+                                name: tc.function.name,
+                                args: JSON.parse(tc.function.arguments)
+                            }
+                        })));
+                    }
+                    return { role: 'model', parts };
+                }
+                return { role: 'user', parts: [{ text: m.content }] };
+            });
 
-    async sendMessage(message: string | any[] | MultimodalMessage): Promise<LLMResult> {
+        const chat = model.startChat({ history });
+
         let payload: string | Part[] | any[];
 
         if (isMultimodal(message)) {
@@ -58,7 +78,7 @@ export class GeminiProvider implements LLMProvider {
         }
 
         try {
-            const result = await this.chat.sendMessage(payload as any);
+            const result = await chat.sendMessage(payload as any);
             const usage = (result.response as any)?.usageMetadata || null;
 
             return {
